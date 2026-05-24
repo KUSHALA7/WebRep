@@ -1,0 +1,284 @@
+@import "tailwindcss";
+
+/* ============================================
+   WebRep — Design System
+   ============================================ */
+
+/* Dark theme (default) */
+:root,
+[data-theme="dark"] {
+  --background: #05070f;
+  --foreground: #f1f5f9;
+  --surface-1: rgba(255,255,255,0.02);
+  --surface-2: rgba(255,255,255,0.04);
+  --surface-3: rgba(255,255,255,0.06);
+  --surface-hover: rgba(255,255,255,0.08);
+  --border-subtle: rgba(255,255,255,0.05);
+  --border-default: rgba(255,255,255,0.10);
+  --border-strong: rgba(255,255,255,0.18);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --card-bg: rgba(0,0,0,0.45);
+  --header-bg: rgba(5,7,15,0.92);
+  --input-bg: rgba(0,0,0,0.55);
+  --glow-opacity: 1;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --surface-1: rgba(0,0,0,0.02);
+  --surface-2: rgba(0,0,0,0.03);
+  --surface-3: rgba(0,0,0,0.05);
+  --surface-hover: rgba(0,0,0,0.06);
+  --border-subtle: rgba(0,0,0,0.06);
+  --border-default: rgba(0,0,0,0.10);
+  --border-strong: rgba(0,0,0,0.18);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --card-bg: rgba(255,255,255,0.80);
+  --header-bg: rgba(248,250,252,0.92);
+  --input-bg: rgba(255,255,255,0.90);
+  --glow-opacity: 0.5;
+}
+
+:root {
+  --accent-indigo: #6366f1;
+  --accent-cyan: #22d3ee;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+  --accent-amber: #f59e0b;
+  --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
+  --transition-base: 250ms cubic-bezier(0.4,0,0.2,1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, monospace;
+}
+
+/* ============================================
+   Base
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Ambient background glows */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.12), transparent),
+    radial-gradient(ellipse 50% 40% at 90% 10%, rgba(34,211,238,0.07), transparent),
+    radial-gradient(ellipse 40% 30% at 5% 90%, rgba(16,185,129,0.06), transparent);
+  opacity: var(--glow-opacity);
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+/* Subtle grid */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 72px 72px;
+  pointer-events: none;
+  z-index: -1;
+  mask-image: radial-gradient(ellipse 70% 50% at 50% 20%, black, transparent);
+}
+
+/* ============================================
+   Selection
+   ============================================ */
+::selection { background: rgba(99,102,241,0.35); color: #fff; }
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.14); }
+
+/* ============================================
+   Focus
+   ============================================ */
+:focus-visible { outline: 2px solid var(--accent-indigo); outline-offset: 2px; }
+
+/* ============================================
+   Links
+   ============================================ */
+a { color: inherit; text-decoration: none; transition: color var(--transition-fast); }
+
+/* ============================================
+   Inputs
+   ============================================ */
+input, textarea { transition: all var(--transition-base); }
+
+input:focus, textarea:focus {
+  border-color: var(--accent-indigo) !important;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.12), 0 0 20px rgba(99,102,241,0.08);
+}
+
+input::placeholder, textarea::placeholder { color: rgba(100,116,139,0.7); }
+
+/* ============================================
+   Primary Button
+   ============================================ */
+.bg-indigo-500 {
+  box-shadow: 0 0 22px rgba(99,102,241,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.bg-indigo-500:hover {
+  box-shadow: 0 0 36px rgba(99,102,241,0.55), inset 0 1px 0 rgba(255,255,255,0.15);
+  transform: translateY(-1px);
+}
+.bg-indigo-500:active { transform: translateY(0); }
+
+/* ============================================
+   Cards — Glass
+   ============================================ */
+.rounded-2xl, .rounded-xl {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ============================================
+   Gradient text animation
+   ============================================ */
+.bg-clip-text {
+  background-size: 200% 200%;
+  animation: grad-shift 8s ease infinite;
+}
+
+@keyframes grad-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* ============================================
+   Header
+   ============================================ */
+header {
+  background: var(--header-bg) !important;
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid var(--border-subtle) !important;
+  transition: background 0.3s ease;
+}
+
+/* Logo glow */
+header .rounded-xl {
+  box-shadow: 0 0 14px rgba(99,102,241,0.25), 0 0 28px rgba(34,211,238,0.15);
+}
+
+/* ============================================
+   Nav active underline
+   ============================================ */
+nav a { position: relative; }
+
+/* ============================================
+   Progress bar glow
+   ============================================ */
+.bg-gradient-to-r.from-indigo-500 {
+  box-shadow: 0 0 10px rgba(99,102,241,0.5), 0 0 20px rgba(34,211,238,0.25);
+}
+
+/* ============================================
+   Status dot
+   ============================================ */
+.bg-emerald-400 {
+  box-shadow: 0 0 8px rgba(52,211,153,0.7);
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(52,211,153,0.6); }
+  50%       { box-shadow: 0 0 20px rgba(52,211,153,0.9), 0 0 30px rgba(52,211,153,0.4); }
+}
+
+/* ============================================
+   Shimmer (disabled button)
+   ============================================ */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.disabled\:bg-gray-700:disabled {
+  background: linear-gradient(90deg, rgba(55,65,81,0.8) 0%, rgba(75,85,99,0.8) 50%, rgba(55,65,81,0.8) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ============================================
+   Page enter
+   ============================================ */
+main > * { animation: page-enter 0.45s ease-out; }
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+/* ============================================
+   Emerald result card
+   ============================================ */
+.border-emerald-500\/30 {
+  box-shadow: 0 0 24px rgba(16,185,129,0.08), inset 0 1px 0 rgba(16,185,129,0.08);
+}
+
+/* ============================================
+   Severity badges
+   ============================================ */
+.border-rose-500\/40   { border-color: rgba(239,68,68,0.4);   }
+.border-amber-500\/40  { border-color: rgba(245,158,11,0.4);  }
+.border-sky-500\/40    { border-color: rgba(14,165,233,0.4);  }
+
+/* ============================================
+   List bullets
+   ============================================ */
+.list-disc li::marker { color: var(--accent-indigo); }
+
+/* ============================================
+   Reduced motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   Print
+   ============================================ */
+@media print {
+  body::before, body::after { display: none; }
+  * { background: white !important; color: black !important; box-shadow: none !important; }
+}
